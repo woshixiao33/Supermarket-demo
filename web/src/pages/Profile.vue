@@ -141,7 +141,9 @@ watch(() => route.path, (newPath) => {
 const loadUserData = async () => {
   loading.value = true
   try {
+    console.log('开始加载用户数据...')
     await userStore.fetchUser()
+    console.log('用户数据加载完成:', userStore.user)
   } catch (error) {
     console.error('Failed to load user data:', error)
   } finally {

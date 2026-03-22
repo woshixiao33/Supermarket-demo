@@ -17,8 +17,11 @@ export const useUserStore = defineStore('user', () => {
 
   const fetchUser = async () => {
     try {
+      console.log('userApi.getUser() 调用中...')
       const res = await userApi.getUser()
+      console.log('API响应:', res)
       user.value = res.data
+      console.log('user.value 设置为:', user.value)
     } catch (error) {
       console.error('Failed to fetch user:', error)
     }
