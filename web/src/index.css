@@ -38,9 +38,11 @@ body {
   color: var(--color-text-main);
   line-height: 1.5;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
-#root {
+#app {
   width: 100%;
   max-width: 430px;
   height: 100vh;
