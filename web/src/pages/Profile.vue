@@ -105,10 +105,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { orderApi, userApi } from '@/api'
+
+const router = useRouter()
+const route = useRoute()
+const userStore = useUserStore()
+const { user } = userStore
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -128,6 +133,13 @@ const orderCounts = ref({
 onMounted(() => {
   loadUserData()
   fetchOrderCounts()
+})
+
+watch(() => route.path, (newPath) => {
+  if (newPath === '/profile') {
+    loadUserData()
+    fetchOrderCounts()
+  }
 })
 
 const loadUserData = async () => {
