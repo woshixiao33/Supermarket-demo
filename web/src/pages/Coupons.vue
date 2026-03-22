@@ -22,6 +22,7 @@
           v-for="coupon in filteredCoupons"
           :key="coupon.id"
           class="coupon-card"
+          :class="{ 'coupon-used': coupon.status === 'used', 'coupon-expired': coupon.status === 'expired' }"
         >
           <div class="coupon-amount">
             <span>¥{{ coupon.amount }}</span>
@@ -31,6 +32,8 @@
             <div class="coupon-desc">满¥{{ coupon.minAmount }}可用 · {{ coupon.category }}</div>
             <div class="coupon-date">有效期至：{{ formatDate(coupon.validUntil) }}</div>
           </div>
+          <div v-if="coupon.status === 'used'" class="coupon-status used">已使用</div>
+          <div v-if="coupon.status === 'expired'" class="coupon-status expired">已过期</div>
         </div>
       </div>
     </section>
@@ -89,6 +92,43 @@ const formatDate = (timestamp: number) => {
   gap: 16px;
 }
 
+.coupon-card.coupon-used,
+.coupon-card.coupon-expired {
+  background: linear-gradient(135deg, #F5F5F5, #FFF);
+  border-color: #E8E8E8;
+}
+
+.coupon-card.coupon-used .coupon-amount,
+.coupon-card.coupon-expired .coupon-amount {
+  background: linear-gradient(135deg, #E8E8E8, #F0F0F0);
+  border-color: #D0D0D0;
+}
+
+.coupon-card.coupon-used .coupon-amount span,
+.coupon-card.coupon-expired .coupon-amount span {
+  color: #999;
+}
+
+.coupon-card.coupon-used .coupon-title,
+.coupon-card.coupon-expired .coupon-title {
+  color: #999;
+}
+
+.coupon-card.coupon-used .coupon-desc,
+.coupon-card.coupon-expired .coupon-desc {
+  color: #CCC;
+}
+
+.coupon-card.coupon-used .coupon-date,
+.coupon-card.coupon-expired .coupon-date {
+  color: #BBB;
+}
+
+.coupon-card.coupon-used::after,
+.coupon-card.coupon-expired::after {
+  color: rgba(0, 0, 0, 0.05);
+}
+
 .coupon-amount {
   flex-shrink: 0;
   width: 80px;
@@ -128,6 +168,29 @@ const formatDate = (timestamp: number) => {
 .coupon-date {
   font-size: 11px;
   color: #999;
+}
+
+.coupon-status {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.coupon-status.used {
+  background: #F0F0F0;
+  color: #999;
+  border: 1px solid #D0D0D0;
+}
+
+.coupon-status.expired {
+  background: #FFF0F0;
+  color: #999;
+  border: 1px solid #FFD1D1;
 }
 
 .coupon-card::after {
