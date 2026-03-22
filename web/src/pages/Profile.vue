@@ -1,6 +1,8 @@
 <template>
   <div class="page">
-    <section v-if="user" class="section">
+    <div v-if="loading" class="loading">加载中...</div>
+
+    <section v-else-if="user" class="section">
       <div class="flex-between" style="margin-bottom: 16px">
         <div class="flex-center" style="gap: 12px">
           <div style="position: relative">
@@ -52,6 +54,8 @@
         </div>
       </div>
     </section>
+
+    <div v-else class="empty">暂无用户信息</div>
 
     <section class="section">
       <div class="section-header">
@@ -112,6 +116,7 @@ const { user } = userStore
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
+const loading = ref(true)
 const orderCounts = ref({
   pending: 0,
   paid: 0,
@@ -121,9 +126,20 @@ const orderCounts = ref({
 })
 
 onMounted(() => {
-  userStore.fetchUser()
+  loadUserData()
   fetchOrderCounts()
 })
+
+const loadUserData = async () => {
+  loading.value = true
+  try {
+    await userStore.fetchUser()
+  } catch (error) {
+    console.error('Failed to load user data:', error)
+  } finally {
+    loading.value = false
+  }
+}
 
 const fetchOrderCounts = async () => {
   try {
