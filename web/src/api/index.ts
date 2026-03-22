@@ -77,8 +77,8 @@ export const productApi = {
 
 export const cartApi = {
   getCart: () => api.get<CartData>('/cart'),
-  addToCart: (data: { productId: string; quantity: number }) => api.post('/cart/add', data),
-  updateCartItem: (productId: string, quantity: number) => api.put('/cart/update', { productId, quantity }),
+  addToCart: (data: { productId: string; quantity: number }) => api.post('/cart', data),
+  updateCartItem: (productId: string, quantity: number) => api.post('/cart', { productId, quantity }),
   removeFromCart: (productId: string) => api.delete(`/cart/${productId}`)
 }
 
@@ -88,7 +88,7 @@ export const orderApi = {
 }
 
 export const userApi = {
-  getUser: () => api.get<User>('/user'),
+  getUser: () => api.get<User>('/user/info'),
   uploadAvatar: (formData: FormData) => api.post<{ avatar: string }>('/user/avatar', formData)
 }
 
@@ -106,7 +106,7 @@ export const messageApi = {
 
 export const favoriteApi = {
   getFavorites: () => api.get<string[]>('/favorites'),
-  addFavorite: (productId: string) => api.post('/favorites/add', { productId }),
+  addFavorite: (productId: string) => api.post('/favorites', { productId }),
   removeFavorite: (productId: string) => api.delete(`/favorites/${productId}`)
 }
 
