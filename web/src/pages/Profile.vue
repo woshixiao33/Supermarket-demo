@@ -109,11 +109,12 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { orderApi, userApi } from '@/api'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
-const { user } = userStore
+const { user } = storeToRefs(userStore)
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
