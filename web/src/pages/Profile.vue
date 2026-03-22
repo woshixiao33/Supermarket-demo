@@ -115,10 +115,6 @@ const route = useRoute()
 const userStore = useUserStore()
 const { user } = userStore
 
-const router = useRouter()
-const userStore = useUserStore()
-const { user } = userStore
-
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
 const loading = ref(true)
