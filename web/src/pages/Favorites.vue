@@ -72,7 +72,7 @@ const fetchFavorites = async () => {
 const handleRemoveFavorite = async (productId: string) => {
   try {
     await favoriteApi.removeFavorite(productId)
-    favoriteProducts.value = favoriteProducts.value.filter(p => p.id !== productId)
+    favoriteProducts.value = favoriteProducts.value.filter((p: any) => p.id !== productId)
   } catch (error) {
     console.error('Failed to remove favorite:', error)
     alert('取消收藏失败')

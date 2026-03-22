@@ -68,7 +68,7 @@ const fetchMessages = async () => {
 const markAsRead = async (id: string) => {
   try {
     await messageApi.markAsRead(id)
-    messages.value = messages.value.map(msg =>
+    messages.value = messages.value.map((msg: any) =>
       msg.id === id ? { ...msg, isRead: true } : msg
     )
   } catch (error) {

@@ -78,7 +78,7 @@ const fetchCoupons = async () => {
 }
 
 const filteredCoupons = computed(() => {
-  return coupons.value.filter(coupon => coupon.status === activeTab.value)
+  return coupons.value.filter((coupon: any) => coupon.status === activeTab.value)
 })
 
 const formatDate = (timestamp: number) => {

@@ -75,7 +75,7 @@ const handleDelete = async (id: string) => {
 
   try {
     await addressApi.deleteAddress(id)
-    addresses.value = addresses.value.filter(addr => addr.id !== id)
+    addresses.value = addresses.value.filter((addr: any) => addr.id !== id)
   } catch (error) {
     console.error('Failed to delete address:', error)
     alert('删除失败')

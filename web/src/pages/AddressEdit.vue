@@ -83,7 +83,6 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { addressApi } from '@/api'
-import type { Address } from '@/types'
 
 const router = useRouter()
 const route = useRoute()

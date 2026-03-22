@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <section class="section">
+    <section v-if="user" class="section">
       <div class="flex-between" style="margin-bottom: 16px">
         <div class="flex-center" style="gap: 12px">
           <div style="position: relative">
@@ -146,10 +146,6 @@ const fetchOrderCounts = async () => {
   } catch (error) {
     console.error('Failed to fetch order counts:', error)
   }
-}
-
-const handleAvatarClick = () => {
-  fileInput.value?.click()
 }
 
 const handleFileChange = async (e: Event) => {

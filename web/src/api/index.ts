@@ -1,5 +1,17 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type {
+  Product,
+  Category,
+  CartData,
+  Order,
+  User,
+  Address,
+  Message,
+  FAQ,
+  ChatMessage,
+  Coupon
+} from '@/types'
 
 const instance: AxiosInstance = axios.create({
   baseURL: '/api',
@@ -24,25 +36,37 @@ export interface ApiResponse<T> {
 
 const api = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.get<any, ApiResponse<T>>(url, config).then(res => ({
-      data: res.data.code === 200 ? res.data.data : res.data,
-      success: res.data.code === 200 || true
-    })),
+    instance.get<any, ApiResponse<T>>(url, config).then((res) => {
+      const responseData = res.data as any
+      return {
+        data: responseData.code === 200 ? responseData.data : responseData,
+        success: responseData.code === 200 || true
+      }
+    }),
   post: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    instance.post<any, ApiResponse<T>>(url, data, config).then(res => ({
-      data: res.data.code === 200 ? res.data.data : res.data,
-      success: res.data.code === 200 || true
-    })),
+    instance.post<any, ApiResponse<T>>(url, data, config).then((res) => {
+      const responseData = res.data as any
+      return {
+        data: responseData.code === 200 ? responseData.data : responseData,
+        success: responseData.code === 200 || true
+      }
+    }),
   put: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    instance.put<any, ApiResponse<T>>(url, data, config).then(res => ({
-      data: res.data.code === 200 ? res.data.data : res.data,
-      success: res.data.code === 200 || true
-    })),
+    instance.put<any, ApiResponse<T>>(url, data, config).then((res) => {
+      const responseData = res.data as any
+      return {
+        data: responseData.code === 200 ? responseData.data : responseData,
+        success: responseData.code === 200 || true
+      }
+    }),
   delete: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.delete<any, ApiResponse<T>>(url, config).then(res => ({
-      data: res.data.code === 200 ? res.data.data : res.data,
-      success: res.data.code === 200 || true
-    }))
+    instance.delete<any, ApiResponse<T>>(url, config).then((res) => {
+      const responseData = res.data as any
+      return {
+        data: responseData.code === 200 ? responseData.data : responseData,
+        success: responseData.code === 200 || true
+      }
+    })
 }
 
 export const productApi = {

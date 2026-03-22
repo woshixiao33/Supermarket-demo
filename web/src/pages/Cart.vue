@@ -50,7 +50,7 @@
     <div v-if="cartData.items.length > 0" class="card" style="padding: 12px 16px">
       <div class="flex-between" style="margin-bottom: 12px">
         <div class="text-sm">
-          共 {{ cartData.items.reduce((sum, item) => sum + item.quantity, 0) }} 件商品
+          共 {{ cartData.items.reduce((sum: number, item: any) => sum + item.quantity, 0) }} 件商品
         </div>
         <div class="text-sm" style="font-weight: 600">
           合计：¥{{ cartData.totalAmount }}

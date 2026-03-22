@@ -102,7 +102,7 @@ const navigateToProduct = (productId: string) => {
 }
 
 const filteredProducts = computed(() => {
-  return products.value.filter(product => {
+  return products.value.filter((product: any) => {
     const matchesCategory = !selectedCategoryId.value || product.categoryId === selectedCategoryId.value
     const matchesSearch = !searchKeyword.value || product.name.includes(searchKeyword.value)
     return matchesCategory && matchesSearch

@@ -2,12 +2,13 @@
   <div class="page" style="display: flex; flex-direction: column; height: 100%">
     <div style="flex: 1; overflow-y: auto">
       <img
+        v-if="product"
         :src="product.image"
         :alt="product.name"
         style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px"
       />
 
-      <div class="card mt-12">
+      <div v-if="product" class="card mt-12">
         <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px">{{ product.name }}</div>
         <div style="font-size: 24px; color: var(--color-danger); font-weight: 700; margin-bottom: 8px">
           ¥{{ product.price }}
@@ -28,7 +29,7 @@
       </div>
     </div>
 
-    <div class="card" style="padding: 12px 16px">
+    <div v-if="product" class="card" style="padding: 12px 16px">
       <div class="flex-between">
         <div class="flex-center" style="gap: 8px">
           <button class="btn btn-sm btn-secondary" @click="quantity = Math.max(1, quantity - 1)">
