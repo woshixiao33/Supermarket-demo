@@ -104,7 +104,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
-import { orderApi } from '@/api'
+import { orderApi, userApi } from '@/api'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -163,6 +163,7 @@ const handleFileChange = async (e: Event) => {
 
   uploading.value = true
   try {
+    await userApi.uploadAvatar(formData)
     await userStore.fetchUser()
     alert('头像修改成功')
   } catch (error) {
