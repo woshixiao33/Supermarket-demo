@@ -8,7 +8,7 @@
     </header>
 
     <main class="app-main">
-      <slot />
+      <router-view />
     </main>
 
     <nav v-if="showTabBar" class="app-tabbar">
@@ -30,6 +30,7 @@
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
+import { RouterView } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
