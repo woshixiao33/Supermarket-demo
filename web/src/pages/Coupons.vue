@@ -23,23 +23,13 @@
           :key="coupon.id"
           class="coupon-card"
         >
-          <div class="flex-center" style="gap: 8">
-            <div class="flex-center coupon-amount">
-              <span style="font-size: 24px; font-weight: 700; color: #E74C3C">
-                ¥{{ coupon.amount }}
-              </span>
-            </div>
-            <div style="flex: 1">
-              <div class="text-sm" style="font-weight: 600; margin-bottom: 4px">
-                {{ coupon.title }}
-              </div>
-              <div class="text-xs text-secondary" style="margin-bottom: 4px">
-                满¥{{ coupon.minAmount }}可用 · {{ coupon.category }}
-              </div>
-              <div class="text-xs text-hint">
-                有效期至：{{ formatDate(coupon.validUntil) }}
-              </div>
-            </div>
+          <div class="coupon-amount">
+            <span>¥{{ coupon.amount }}</span>
+          </div>
+          <div class="coupon-info">
+            <div class="coupon-title">{{ coupon.title }}</div>
+            <div class="coupon-desc">满¥{{ coupon.minAmount }}可用 · {{ coupon.category }}</div>
+            <div class="coupon-date">有效期至：{{ formatDate(coupon.validUntil) }}</div>
           </div>
         </div>
       </div>
@@ -94,24 +84,61 @@ const formatDate = (timestamp: number) => {
   padding: 16px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .coupon-amount {
+  flex-shrink: 0;
   width: 80px;
   height: 80px;
   background: linear-gradient(135deg, #FFE5E5, #FFF0F0);
   border-radius: 50%;
   border: 2px dashed #FFD1D1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coupon-amount span {
+  color: #E74C3C;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.coupon-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.coupon-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.coupon-desc {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.coupon-date {
+  font-size: 11px;
+  color: #999;
 }
 
 .coupon-card::after {
-  content: '';
+  content: '券';
   position: absolute;
-  bottom: 12px;
+  bottom: 8px;
   right: 12px;
   font-size: 48px;
   color: rgba(231, 76, 60, 0.1);
   font-weight: 700;
   pointer-events: none;
+  line-height: 1;
 }
 </style>

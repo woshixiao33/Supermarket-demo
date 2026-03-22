@@ -11,30 +11,20 @@
         <div
           v-for="msg in messages"
           :key="msg.id"
-          class="card"
-          style="cursor: pointer"
-          :style="{ opacity: msg.isRead ? 0.6 : 1 }"
+          class="message-card"
+          :class="{ read: msg.isRead }"
           @click="markAsRead(msg.id)"
         >
-          <div class="flex-between" style="margin-bottom: 8px">
-            <div class="text-sm" style="font-weight: 600">
-              {{ msg.title }}
-            </div>
-            <div class="text-xs text-hint">
-              {{ formatTime(msg.createdAt) }}
-            </div>
+          <div class="message-header">
+            <div class="message-title">{{ msg.title }}</div>
+            <div class="message-time">{{ formatTime(msg.createdAt) }}</div>
           </div>
-          <div class="text-sm text-secondary">{{ msg.content }}</div>
-          <div class="flex-center" style="gap: 8px; margin-top: 8px">
-            <span
-              style="font-size: 12px; padding: 2px 8px; border-radius: 4px; background: #f0f0f0"
-            >
+          <div class="message-content">{{ msg.content }}</div>
+          <div class="message-footer">
+            <span class="message-tag">
               {{ msg.type === 'system' ? '系统' : msg.type === 'order' ? '订单' : '活动' }}
             </span>
-            <span
-              v-if="!msg.isRead"
-              style="width: 6px; height: 6px; border-radius: 50%; background: var(--color-danger)"
-            ></span>
+            <span v-if="!msg.isRead" class="message-dot"></span>
           </div>
         </div>
       </div>
@@ -90,3 +80,71 @@ const formatTime = (timestamp: number) => {
   return new Date(timestamp).toLocaleDateString()
 }
 </script>
+
+<style scoped>
+.message-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+}
+
+.message-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary);
+}
+
+.message-card.read {
+  opacity: 0.6;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.message-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.message-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.message-content {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.message-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.message-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.message-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  margin-left: auto;
+}
+</style>
