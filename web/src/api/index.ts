@@ -1,64 +1,97 @@
-import axios from 'axios';
-import type { ApiResponse, CartData, Order, User, Message, Address, Favorite, FAQ, ChatMessage } from '@/types';
+import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-const API_BASE = '/api';
+const instance: AxiosInstance = axios.create({
+  baseURL: '/api',
+  timeout: 10000
+})
 
-const api = axios.create({
-  baseURL: API_BASE,
-  timeout: 10000,
-});
+instance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+export default instance
+
+export interface ApiResponse<T> {
+  data: T
+  success: boolean
+}
+
+const api = {
+  get: <T>(url: string, config?: AxiosRequestConfig) =>
+    instance.get<any, ApiResponse<T>>(url, config).then(res => ({
+      data: res.data.code === 200 ? res.data.data : res.data,
+      success: res.data.code === 200 || true
+    })),
+  post: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
+    instance.post<any, ApiResponse<T>>(url, data, config).then(res => ({
+      data: res.data.code === 200 ? res.data.data : res.data,
+      success: res.data.code === 200 || true
+    })),
+  put: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
+    instance.put<any, ApiResponse<T>>(url, data, config).then(res => ({
+      data: res.data.code === 200 ? res.data.data : res.data,
+      success: res.data.code === 200 || true
+    })),
+  delete: <T>(url: string, config?: AxiosRequestConfig) =>
+    instance.delete<any, ApiResponse<T>>(url, config).then(res => ({
+      data: res.data.code === 200 ? res.data.data : res.data,
+      success: res.data.code === 200 || true
+    }))
+}
 
 export const productApi = {
-  getCategories: () => api.get<any[]>('/categories').then(res => ({ data: res.data, success: true })),
-  getProducts: (params?: { categoryId?: string; q?: string }) => api.get<any[]>('/products', { params }).then(res => ({ data: res.data, success: true })),
-  getProduct: (id: string) => api.get<any>(`/products/${id}`).then(res => ({ data: res.data, success: true })),
-};
+  getCategories: () => api.get<Category[]>('/categories'),
+  getProducts: () => api.get<Product[]>('/products'),
+  getProduct: (id: string) => api.get<Product>(`/products/${id}`)
+}
 
 export const cartApi = {
-  getCart: () => api.get<CartData>('/cart').then(res => ({ data: res.data, success: true })),
-  addToCart: (data: { productId: string; quantity: number }) => api.post('/cart', data).then(res => ({ data: res.data, success: true })),
-};
+  getCart: () => api.get<CartData>('/cart'),
+  addToCart: (data: { productId: string; quantity: number }) => api.post('/cart/add', data),
+  updateCartItem: (productId: string, quantity: number) => api.put('/cart/update', { productId, quantity }),
+  removeFromCart: (productId: string) => api.delete(`/cart/${productId}`)
+}
 
 export const orderApi = {
-  checkout: () => api.post<{ success: boolean; orderId: string }>('/checkout').then(res => ({ data: res.data, success: res.data.success })),
-  getOrders: (params?: { status?: string }) => api.get<any[]>('/orders', { params }).then(res => ({ data: res.data, success: true })),
-};
+  getOrders: (params?: { status?: string }) => api.get<Order[]>('/orders', { params }),
+  checkout: () => api.post<{ orderId: string }>('/checkout')
+}
 
 export const userApi = {
-  getUserInfo: () => api.get<any>('/user/info').then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-  uploadAvatar: (formData: FormData) => api.post<{ avatar: string }>('/user/avatar', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }).then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-};
-
-export const messageApi = {
-  getMessages: (params?: { type?: string }) => api.get<any>('/messages', { params }).then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-  markAsRead: (id: string) => api.put(`/messages/${id}/read`).then(res => ({ data: res.data, success: res.data.code === 200 })),
-  deleteMessages: (ids: string[]) => api.delete('/messages', { data: { ids } }).then(res => ({ data: res.data, success: res.data.code === 200 })),
-};
+  getUser: () => api.get<User>('/user'),
+  uploadAvatar: (formData: FormData) => api.post<{ avatar: string }>('/user/avatar', formData)
+}
 
 export const addressApi = {
-  getAddresses: () => api.get<any>('/addresses').then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-  addAddress: (data: Omit<Address, 'id'>) => api.post<any>('/addresses', data).then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-  updateAddress: (id: string, data: Partial<Address>) => api.put(`/addresses/${id}`, data).then(res => ({ data: res.data, success: res.data.code === 200 })),
-  deleteAddress: (id: string) => api.delete(`/addresses/${id}`).then(res => ({ data: res.data, success: res.data.code === 200 })),
-  setDefault: (id: string) => api.put(`/addresses/${id}/default`).then(res => ({ data: res.data, success: res.data.code === 200 })),
-};
+  getAddresses: () => api.get<Address[]>('/addresses'),
+  addAddress: (data: Partial<Address>) => api.post('/addresses', data),
+  updateAddress: (id: string, data: Partial<Address>) => api.put(`/addresses/${id}`, data),
+  deleteAddress: (id: string) => api.delete(`/addresses/${id}`)
+}
+
+export const messageApi = {
+  getMessages: () => api.get<Message[]>('/messages'),
+  markAsRead: (id: string) => api.put(`/messages/${id}/read`)
+}
 
 export const favoriteApi = {
-  getFavorites: () => api.get<any>('/favorites').then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-  addFavorite: (productId: string) => api.post('/favorites', { productId }).then(res => ({ data: res.data, success: res.data.code === 200 })),
-  deleteFavorite: (productId: string) => api.delete(`/favorites/${productId}`).then(res => ({ data: res.data, success: res.data.code === 200 })),
-};
+  getFavorites: () => api.get<string[]>('/favorites'),
+  addFavorite: (productId: string) => api.post('/favorites/add', { productId }),
+  removeFavorite: (productId: string) => api.delete(`/favorites/${productId}`)
+}
 
 export const customerServiceApi = {
-  getFAQ: () => api.get<any>('/customer-service/faq').then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-  sendMessage: (message: string) => api.post('/customer-service/chat', { message }).then(res => ({ data: res.data, success: res.data.code === 200 })),
-  getChatHistory: () => api.get<any>('/customer-service/chat').then(res => ({ data: res.data.data, success: res.data.code === 200 })),
-};
+  getFAQ: () => api.get<FAQ[]>('/customer-service/faq'),
+  getChatHistory: () => api.get<ChatMessage[]>('/customer-service/chat'),
+  sendMessage: (message: string) => api.post('/customer-service/chat', { message })
+}
 
 export const couponApi = {
-  getCoupons: (params?: { status?: 'available' | 'used' | 'expired' }) => api.get<any[]>('/coupons', { params }).then(res => ({ data: res.data, success: true })),
-};
-
-export default api;
+  getCoupons: (status?: string) => api.get<Coupon[]>('/coupons', status ? { params: { status } } : undefined)
+}
