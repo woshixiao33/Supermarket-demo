@@ -1,37 +1,53 @@
 <template>
-  <div class="page" style="padding-bottom: 0">
-    <header style="background: linear-gradient(135deg, #27AE60, #2ECC71); padding: 16px; color: #fff">
-      <div style="display: flex; gap: 8px; align-items: center">
-        <select
-          v-model="currentLocation"
-          style="flex: 1; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 8px; padding: 12px 12px 12px 16px; color: #fff; font-size: 14px; font-weight: 600; outline: none; cursor: pointer"
-          @change="handleLocationChange"
-        >
-          <option v-for="loc in LOCATIONS" :key="loc.id" :value="loc.id">
-            {{ loc.name }}
-          </option>
-        </select>
-        <div style="flex: 2; position: relative">
+  <div class="page home-page">
+    <header class="home-header">
+      <div style="display: flex; gap: 12px; align-items: center; height: 32px">
+        <div style="display: flex; align-items: center; gap: 4px; cursor: pointer; position: relative; padding-right: 20px; min-width: 0; flex-shrink: 0" @click="$refs.locationSelect?.focus()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27AE60" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span style="font-size: 13px; font-weight: 500; color: #333; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+            {{ selectedLocation.name }}{{ selectedLocation.desc ? ' · ' + selectedLocation.desc : '' }}
+          </span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="3" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%)">
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+          <select
+            ref="locationSelect"
+            v-model="currentLocation"
+            style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; -webkit-appearance: none; appearance: none"
+            @change="handleLocationChange"
+          >
+            <option v-for="loc in LOCATIONS" :key="loc.id" :value="loc.id">
+              {{ loc.name }}{{ loc.desc ? ' · ' + loc.desc : '' }}
+            </option>
+          </select>
+        </div>
+        <div style="flex: 1; position: relative; min-width: 0">
           <input
             v-model="searchValue"
             type="text"
-            placeholder="搜索商品分类..."
-            style="width: 100%; padding: 12px 40px 12px 16px; border: none; border-radius: 8px; font-size: 14px; outline: none; color: #333"
+            placeholder="搜索商品..."
+            style="width: 100%; height: 32px; padding: 0 12px 0 34px; border: 1px solid #e8e8e8; border-radius: 16px; font-size: 13px; outline: none; color: #333; background: #f5f5f5"
             @keydown.enter="handleSearch"
           />
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #27AE60; cursor: pointer"
-            @click="handleSearch"
-          >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%)">
             <circle cx="11" cy="11" r="8" />
             <path d="M21 21l-4.35-4.35" />
           </svg>
+        </div>
+        <div
+          style="position: relative; cursor: pointer; padding: 4px; flex-shrink: 0"
+          @click="router.push('/messages')"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span v-if="unreadCount > 0" style="position: absolute; top: 0; right: 0; min-width: 14px; height: 14px; background: #ff4d4f; border-radius: 7px; font-size: 10px; color: #fff; display: flex; align-items: center; justify-content: center; padding: 0 3px; border: 2px solid #fff">
+            {{ unreadCount > 99 ? '99+' : unreadCount }}
+          </span>
         </div>
       </div>
     </header>
@@ -118,9 +134,11 @@ const cartStore = useCartStore()
 const { incrementRefreshToken } = cartStore
 
 const LOCATIONS = [
-  { id: '1', name: '北京市朝阳区', desc: '三里屯店' },
-  { id: '2', name: '北京市海淀区', desc: '中关村店' },
-  { id: '3', name: '北京市西城区', desc: '金融街店' }
+  { id: '1', name: '三里屯SOHO', desc: 'A座' },
+  { id: '2', name: '中关村大厦', desc: 'B座' },
+  { id: '3', name: '金融街购物中心', desc: 'C座' },
+  { id: '4', name: '国贸大厦', desc: '一期' },
+  { id: '5', name: '望京SOHO', desc: 'T1' }
 ]
 
 const BANNER_IMAGES = [
@@ -135,11 +153,13 @@ const products = ref<Product[]>([])
 const currentLocation = ref(LOCATIONS[0].id)
 const searchValue = ref('')
 const currentBanner = ref(0)
+const unreadCount = ref(0)
 
 const selectedLocation = computed(() => LOCATIONS.find(l => l.id === currentLocation.value) || LOCATIONS[0])
 
 onMounted(() => {
   fetchData()
+  fetchUnreadCount()
   const bannerInterval = setInterval(() => {
     currentBanner.value = (currentBanner.value + 1) % BANNER_IMAGES.length
   }, 3000)
@@ -156,6 +176,15 @@ const fetchData = async () => {
     products.value = prodsRes.data
   } catch (error) {
     console.error('Failed to fetch data:', error)
+  }
+}
+
+const fetchUnreadCount = async () => {
+  try {
+    const messages = await productApi.getMessages()
+    unreadCount.value = messages.data.filter((m: any) => !m.read).length
+  } catch (error) {
+    console.error('Failed to fetch messages:', error)
   }
 }
 
@@ -190,6 +219,25 @@ const navigateToProduct = (productId: string) => {
 </script>
 
 <style scoped>
+.home-page {
+  padding-bottom: 0;
+  padding-top: 56px;
+}
+
+.home-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: #fff;
+  padding: 12px 16px;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 430px;
+}
+
 .category-item {
   padding: 8px 4px;
   cursor: pointer;

@@ -334,6 +334,18 @@ app.post('/api/user/avatar', upload.single('avatar'), (req, res) => {
   res.json({ code: 200, data: { avatar: user.avatar }, message: '头像修改成功' });
 });
 
+app.put('/api/user/username', (req, res) => {
+  const { username } = req.body;
+  if (!username || username.trim().length === 0) {
+    return res.json({ code: 400, message: '用户名不能为空' });
+  }
+  if (username.trim().length > 20) {
+    return res.json({ code: 400, message: '用户名不能超过20个字符' });
+  }
+  user.username = username.trim();
+  res.json({ code: 200, data: { username: user.username }, message: '用户名修改成功' });
+});
+
 // Message APIs
 app.get('/api/messages', (req, res) => {
   const { type } = req.query;

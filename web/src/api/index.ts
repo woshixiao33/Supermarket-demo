@@ -89,7 +89,8 @@ export const orderApi = {
 
 export const userApi = {
   getUser: () => api.get<User>('/user/info'),
-  uploadAvatar: (formData: FormData) => api.post<{ avatar: string }>('/user/avatar', formData)
+  uploadAvatar: (formData: FormData) => api.post<{ avatar: string }>('/user/avatar', formData),
+  updateUsername: (username: string) => api.put<{ username: string }>('/user/username', { username })
 }
 
 export const addressApi = {

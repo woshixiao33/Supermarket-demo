@@ -67,7 +67,7 @@ const headerTitle = computed(() => {
 })
 
 const showHeader = computed(() => {
-  return !route.path.startsWith('/payment-result')
+  return !route.path.startsWith('/payment-result') && route.path !== '/home' && route.path !== '/' && route.path !== '/profile'
 })
 
 const showTabBar = computed(() => {
