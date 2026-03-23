@@ -104,6 +104,73 @@ const products = [
     image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&q=80',
     tags: ['有机', '高钙'],
     desc: '牧场直供，营养健康。'
+  },
+  // 春节活动商品
+  {
+    id: 'p100',
+    name: '智利进口车厘子礼盒',
+    price: 188.0,
+    stock: 50,
+    categoryId: 'fruit',
+    image: 'https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=400&q=80',
+    tags: ['进口', '礼盒装'],
+    desc: '智利空运，果大核小，鲜甜多汁',
+    tag: '年货价'
+  },
+  {
+    id: 'p101',
+    name: '深海大黄鱼 700g/条',
+    price: 68.0,
+    stock: 30,
+    categoryId: 'seafood',
+    image: 'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=400&q=80',
+    tags: ['野生', '生鲜'],
+    desc: '深海捕捞，新鲜直达',
+    tag: '年货价'
+  },
+  {
+    id: 'p102',
+    name: '澳洲牛排套餐 1kg',
+    price: 299.0,
+    stock: 40,
+    categoryId: 'meat',
+    image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400&q=80',
+    tags: ['进口', '高蛋白'],
+    desc: '澳洲谷饲，鲜嫩多汁',
+    tag: '年货价'
+  },
+  {
+    id: 'p103',
+    name: '精品坚果礼盒 1.5kg',
+    price: 128.0,
+    stock: 60,
+    categoryId: 'snack',
+    image: 'https://images.unsplash.com/photo-1608032077098-1b223690d6ea?w=400&q=80',
+    tags: ['健康', '无添加'],
+    desc: '多种坚果混合，营养美味',
+    tag: '年货价'
+  },
+  {
+    id: 'p104',
+    name: '鲜活大闸蟹 8只装',
+    price: 398.0,
+    stock: 25,
+    categoryId: 'seafood',
+    image: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=400&q=80',
+    tags: ['鲜活', '当季'],
+    desc: '精选优质大闸蟹，个大肥美',
+    tag: '年货价'
+  },
+  {
+    id: 'p105',
+    name: '有机蔬菜礼盒 3kg',
+    price: 89.0,
+    stock: 45,
+    categoryId: 'vegetable',
+    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80',
+    tags: ['有机', '新鲜'],
+    desc: '有机种植，绿色健康',
+    tag: '年货价'
   }
 ];
 
@@ -270,12 +337,42 @@ app.post('/api/cart', (req, res) => {
 });
 
 app.post('/api/checkout', (req, res) => {
+  const { couponId } = req.body;
+
   if (!Object.keys(cart).length) {
     return res.status(400).json({ message: '购物车为空' });
   }
+
   const items = buildCartItems();
-  const totalAmount = Number(items.reduce((sum, i) => sum + i.amount, 0).toFixed(2));
+  let totalAmount = Number(items.reduce((sum, i) => sum + i.amount, 0).toFixed(2));
   const orderId = 'MOCK' + Date.now();
+
+  // 优惠券折扣计算
+  let couponDiscount = 0;
+  let usedCoupon = null;
+
+  if (couponId) {
+    // 检查普通优惠券
+    const coupon = coupons.find(c => c.id === couponId);
+    // 检查春节活动优惠券
+    const cnyCoupon = global.userCouponRecords?.[`user_user001_coupon_${couponId === 'cny50' ? '50' : '20'}`] ?
+      { id: 'cny' + (couponId === 'cny50' ? '50' : '20'), amount: couponId === 'cny50' ? 50 : 20, minAmount: couponId === 'cny50' ? 299 : 199 } :
+      null;
+
+    const validCoupon = coupon || cnyCoupon;
+
+    if (validCoupon) {
+      if (totalAmount >= validCoupon.minAmount) {
+        couponDiscount = validCoupon.amount;
+        usedCoupon = {
+          id: validCoupon.id,
+          title: validCoupon.title || '优惠券',
+          amount: validCoupon.amount
+        };
+        totalAmount = Number((totalAmount - couponDiscount).toFixed(2));
+      }
+    }
+  }
 
   // Snapshot cart into order (in-memory demo)
   orders.unshift({
@@ -287,12 +384,14 @@ app.post('/api/checkout', (req, res) => {
       amount: i.amount
     })),
     totalAmount,
+    originalAmount: totalAmount + couponDiscount,
+    coupon: usedCoupon,
     status: '已支付',
     createdAt: Date.now()
   });
 
   cart = {};
-  res.json({ success: true, orderId });
+  res.json({ success: true, orderId, totalAmount, couponDiscount });
 });
 
 app.get('/api/orders', (req, res) => {
@@ -301,6 +400,9 @@ app.get('/api/orders', (req, res) => {
     orderId: o.orderId,
     status: o.status,
     totalAmount: o.totalAmount,
+    originalAmount: o.originalAmount || o.totalAmount,
+    coupon: o.coupon,
+    couponDiscount: o.coupon?.amount || 0,
     createdAt: o.createdAt,
     previewImage: o.items?.[0]?.product?.image,
     previewName: o.items?.[0]?.product?.name,
@@ -473,14 +575,176 @@ app.get('/api/customer-service/chat', (req, res) => {
 
 // Coupon APIs
 app.get('/api/coupons', (req, res) => {
-  const { status } = req.query;
+  const { status, userId } = req.query;
   let result = [...coupons];
+
+  // 如果提供了 userId，合并春节活动领取的优惠券
+  if (userId && global.userCouponRecords) {
+    const cnyCoupons = [];
+
+    // 检查 50元券
+    if (global.userCouponRecords[`user_${userId}_coupon_50`]) {
+      cnyCoupons.push({
+        id: 'cny50',
+        title: '春节满减券',
+        amount: 50,
+        minAmount: 299,
+        category: '全场通用',
+        status: 'available',
+        validUntil: Date.now() + 30 * 24 * 60 * 60 * 1000,
+        description: '春节活动专享，满299减50'
+      });
+    }
+
+    // 检查 20元券
+    if (global.userCouponRecords[`user_${userId}_coupon_20`]) {
+      cnyCoupons.push({
+        id: 'cny20',
+        title: '春节折扣券',
+        amount: 20,
+        minAmount: 129,
+        category: '全场通用',
+        status: 'available',
+        validUntil: Date.now() + 30 * 24 * 60 * 60 * 1000,
+        description: '春节活动专享，满129减20'
+      });
+    }
+
+    result = [...result, ...cnyCoupons];
+  }
 
   if (status) {
     result = result.filter(c => c.status === status);
   }
 
   res.json(result);
+});
+
+// 春节活动相关接口
+
+// 活动商品列表接口
+app.get('/api/goods/list', (req, res) => {
+  const { activityId } = req.query;
+  
+  if (activityId === 'CNY2026') {
+    // 春节活动专属商品
+    const activityProducts = [
+      {
+        id: 'p100',
+        name: '智利进口车厘子礼盒',
+        price: 188.0,
+        image: 'https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=400&q=80',
+        tag: '年货价',
+        stock: 50,
+        categoryId: 'fruit',
+        desc: '智利空运，果大核小，鲜甜多汁',
+        tags: ['进口', '礼盒装']
+      },
+      {
+        id: 'p101',
+        name: '深海大黄鱼 700g/条',
+        price: 68.0,
+        image: 'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=400&q=80',
+        tag: '年货价',
+        stock: 30,
+        categoryId: 'seafood',
+        desc: '深海捕捞，新鲜直达',
+        tags: ['野生', '生鲜']
+      },
+      {
+        id: 'p102',
+        name: '澳洲牛排套餐 1kg',
+        price: 299.0,
+        image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400&q=80',
+        tag: '年货价',
+        stock: 40,
+        categoryId: 'meat',
+        desc: '澳洲谷饲，鲜嫩多汁',
+        tags: ['进口', '高蛋白']
+      },
+      {
+        id: 'p103',
+        name: '精品坚果礼盒 1.5kg',
+        price: 128.0,
+        image: 'https://images.unsplash.com/photo-1608032077098-1b223690d6ea?w=400&q=80',
+        tag: '年货价',
+        stock: 60,
+        categoryId: 'snack',
+        desc: '多种坚果混合，营养美味',
+        tags: ['健康', '无添加']
+      },
+      {
+        id: 'p104',
+        name: '鲜活大闸蟹 8只装',
+        price: 398.0,
+        image: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=400&q=80',
+        tag: '年货价',
+        stock: 25,
+        categoryId: 'seafood',
+        desc: '精选优质大闸蟹，个大肥美',
+        tags: ['鲜活', '当季']
+      },
+      {
+        id: 'p105',
+        name: '有机蔬菜礼盒 3kg',
+        price: 89.0,
+        image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80',
+        tag: '年货价',
+        stock: 45,
+        categoryId: 'vegetable',
+        desc: '有机种植，绿色健康',
+        tags: ['有机', '新鲜']
+      }
+    ];
+    res.json({ code: 0, msg: 'success', data: activityProducts });
+  } else {
+    res.json({ code: 0, msg: 'success', data: [] });
+  }
+});
+
+// 领券接口
+app.post('/api/coupon/receive', (req, res) => {
+  const { couponType, userId } = req.body;
+  
+  // 模拟用户领券记录
+  const userCouponKey = `user_${userId}_coupon_${couponType}`;
+  
+  // 检查是否已领取
+  if (global.userCouponRecords && global.userCouponRecords[userCouponKey]) {
+    return res.json({ code: 1001, msg: '您已领取过该优惠券' });
+  }
+  
+  // 初始化领券记录
+  if (!global.userCouponRecords) {
+    global.userCouponRecords = {};
+  }
+  
+  // 标记为已领取
+  global.userCouponRecords[userCouponKey] = {
+    couponType,
+    userId,
+    receivedAt: Date.now()
+  };
+  
+  res.json({ code: 0, msg: 'success', data: { received: true } });
+});
+
+// 优惠券状态查询接口
+app.get('/api/coupon/status', (req, res) => {
+  const { userId } = req.query;
+  
+  // 模拟查询用户领券状态
+  const userCouponKey50 = `user_${userId}_coupon_50`;
+  const userCouponKey20 = `user_${userId}_coupon_20`;
+  
+  res.json({
+    code: 0,
+    msg: 'success',
+    data: {
+      coupon50Received: !!(global.userCouponRecords && global.userCouponRecords[userCouponKey50]),
+      coupon20Received: !!(global.userCouponRecords && global.userCouponRecords[userCouponKey20])
+    }
+  });
 });
 
 // Static files for uploaded images

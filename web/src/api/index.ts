@@ -38,33 +38,45 @@ const api = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>
     instance.get<any, ApiResponse<T>>(url, config).then((res) => {
       const responseData = res.data as any
+      // 支持 code: 0 和 code: 200 两种格式
+      const hasData = responseData.hasOwnProperty('data')
+      const isSuccess = responseData.code === 0 || responseData.code === 200
       return {
-        data: responseData.code === 200 ? responseData.data : responseData,
-        success: responseData.code === 200 || true
+        data: isSuccess && hasData ? responseData.data : responseData,
+        success: isSuccess
       }
     }),
   post: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
     instance.post<any, ApiResponse<T>>(url, data, config).then((res) => {
       const responseData = res.data as any
+      // 支持 code: 0 和 code: 200 两种格式
+      const hasData = responseData.hasOwnProperty('data')
+      const isSuccess = responseData.code === 0 || responseData.code === 200
       return {
-        data: responseData.code === 200 ? responseData.data : responseData,
-        success: responseData.code === 200 || true
+        data: isSuccess && hasData ? responseData.data : responseData,
+        success: isSuccess
       }
     }),
   put: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
     instance.put<any, ApiResponse<T>>(url, data, config).then((res) => {
       const responseData = res.data as any
+      // 支持 code: 0 和 code: 200 两种格式
+      const hasData = responseData.hasOwnProperty('data')
+      const isSuccess = responseData.code === 0 || responseData.code === 200
       return {
-        data: responseData.code === 200 ? responseData.data : responseData,
-        success: responseData.code === 200 || true
+        data: isSuccess && hasData ? responseData.data : responseData,
+        success: isSuccess
       }
     }),
   delete: <T>(url: string, config?: AxiosRequestConfig) =>
     instance.delete<any, ApiResponse<T>>(url, config).then((res) => {
       const responseData = res.data as any
+      // 支持 code: 0 和 code: 200 两种格式
+      const hasData = responseData.hasOwnProperty('data')
+      const isSuccess = responseData.code === 0 || responseData.code === 200
       return {
-        data: responseData.code === 200 ? responseData.data : responseData,
-        success: responseData.code === 200 || true
+        data: isSuccess && hasData ? responseData.data : responseData,
+        success: isSuccess
       }
     })
 }
@@ -84,7 +96,7 @@ export const cartApi = {
 
 export const orderApi = {
   getOrders: (params?: { status?: string }) => api.get<Order[]>('/orders', { params }),
-  checkout: () => api.post<{ orderId: string }>('/checkout')
+  checkout: (data?: { couponId?: string }) => api.post<{ orderId: string; totalAmount: number; couponDiscount: number }>('/checkout', data)
 }
 
 export const userApi = {
@@ -118,5 +130,10 @@ export const customerServiceApi = {
 }
 
 export const couponApi = {
-  getCoupons: (status?: string) => api.get<Coupon[]>('/coupons', status ? { params: { status } } : undefined)
+  getCoupons: (status?: string, userId?: string) => {
+    const params: any = {}
+    if (status) params.status = status
+    if (userId) params.userId = userId
+    return api.get<Coupon[]>('/coupons', Object.keys(params).length > 0 ? { params } : undefined)
+  }
 }

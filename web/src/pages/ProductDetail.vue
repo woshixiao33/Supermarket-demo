@@ -44,8 +44,12 @@
         </div>
 
         <div class="flex-center" style="gap: 8px">
-          <button class="btn btn-sm btn-secondary" @click="router.push('/cart')">
-            购物车
+          <button class="btn btn-sm btn-secondary" style="padding: 12px 16px" @click="router.push('/cart')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
           </button>
           <button class="btn btn-primary" style="padding: 12px 24px" @click="handleAddToCart">
             加入购物车

@@ -53,7 +53,7 @@
     </header>
 
     <section style="padding: 12px; background: var(--color-bg)">
-      <div style="position: relative; width: 100%; height: 160px; border-radius: 12px; overflow: hidden; margin-bottom: 12px">
+      <div style="position: relative; width: 100%; height: 160px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; cursor: pointer" @click="router.push('/activity/spring')">
         <img
           v-for="(img, index) in BANNER_IMAGES"
           :key="index"
@@ -61,7 +61,43 @@
           :alt="'Banner ' + (index + 1)"
           style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: currentBanner === index ? 1 : 0; transition: opacity 0.5s ease"
         />
-        <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px">
+        <!-- 第一张轮播图的文案 -->
+        <div
+          v-if="currentBanner === 0"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(230, 57, 70, 0.75), rgba(255, 122, 0, 0.65)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease"
+        >
+          <div style="font-size: 28px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.2)">
+            春归鲜到
+          </div>
+          <div style="font-size: 14px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.2)">
+            来尝鲜 · 春节囤货大赏
+          </div>
+        </div>
+        <!-- 第二张轮播图的文案 -->
+        <div
+          v-if="currentBanner === 1"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(255, 165, 2, 0.75)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease"
+        >
+          <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.3)">
+            百亿补贴
+          </div>
+          <div style="font-size: 16px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.2)">
+            领国补 · 真优惠
+          </div>
+        </div>
+        <!-- 第三张轮播图的文案 -->
+        <div
+          v-if="currentBanner === 2"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(142, 68, 173, 0.75), rgba(52, 73, 94, 0.7)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease"
+        >
+          <div style="font-size: 28px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.2)">
+            官方立减8.8折起
+          </div>
+          <div style="font-size: 14px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.2)">
+            酒水专场 · 畅享优惠
+          </div>
+        </div>
+        <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 10">
           <div
             v-for="(_, index) in BANNER_IMAGES"
             :key="index"
@@ -143,8 +179,8 @@ const LOCATIONS = [
 
 const BANNER_IMAGES = [
   'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80',
-  'https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&q=80',
-  'https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?w=800&q=80',
+  'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80',
+  'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80',
   'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80'
 ]
 

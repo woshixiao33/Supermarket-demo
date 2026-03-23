@@ -20,7 +20,8 @@ const routes = [
       { path: 'address/:id/edit', component: () => import('@/pages/AddressEdit.vue') },
       { path: 'favorites', component: () => import('@/pages/Favorites.vue') },
       { path: 'customer-service', component: () => import('@/pages/CustomerService.vue') },
-      { path: 'payment-result/:orderId', component: () => import('@/pages/PaymentResult.vue') }
+      { path: 'payment-result/:orderId', component: () => import('@/pages/PaymentResult.vue') },
+      { path: 'activity/spring', component: () => import('@/pages/SpringActivity.vue') }
     ]
   }
 ]

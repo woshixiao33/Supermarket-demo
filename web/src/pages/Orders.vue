@@ -44,8 +44,16 @@
               </div>
             </div>
           </div>
-          <div class="text-sm" style="font-weight: 600">
-            ¥{{ order.totalAmount }}
+          <div class="flex-column" style="align-items: flex-end">
+            <div v-if="order.couponDiscount > 0" class="text-xs text-secondary" style="text-decoration: line-through">
+              ¥{{ order.originalAmount || order.totalAmount + order.couponDiscount }}
+            </div>
+            <div class="text-sm" style="font-weight: 600">
+              ¥{{ order.totalAmount }}
+            </div>
+            <div v-if="order.coupon" class="text-xs" style="color: #ff4d4f; margin-top: 2px">
+              已用券：{{ order.coupon.title }} -¥{{ order.coupon.amount }}
+            </div>
           </div>
         </div>
 

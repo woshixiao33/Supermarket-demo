@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { userApi } from '@/api'
+import { userApi, couponApi } from '@/api'
 
 interface User {
   id: string
@@ -22,8 +22,25 @@ export const useUserStore = defineStore('user', () => {
       console.log('API响应:', res)
       user.value = res.data
       console.log('user.value 设置为:', user.value)
+
+      // 获取实际的优惠券数量
+      await fetchCouponCount()
     } catch (error) {
       console.error('Failed to fetch user:', error)
+    }
+  }
+
+  const fetchCouponCount = async () => {
+    try {
+      // 获取可用的优惠券数量，传递 userId 以包含春节活动领取的优惠券
+      const res = await couponApi.getCoupons('available', 'user001')
+      const availableCoupons = res.data || []
+      if (user.value) {
+        user.value.coupons = availableCoupons.length
+        console.log('优惠券数量更新为:', user.value.coupons)
+      }
+    } catch (error) {
+      console.error('Failed to fetch coupon count:', error)
     }
   }
 
@@ -34,6 +51,7 @@ export const useUserStore = defineStore('user', () => {
   return {
     user,
     fetchUser,
+    fetchCouponCount,
     updateUser
   }
 })

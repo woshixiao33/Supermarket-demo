@@ -48,6 +48,7 @@ import type { Coupon } from '@/types'
 const coupons = ref<Coupon[]>([])
 const loading = ref(true)
 const activeTab = ref<'available' | 'used' | 'expired'>('available')
+const userId = ref('user001') // 与春节活动页面使用相同的 userId
 
 const tabs = [
   { label: '可使用', value: 'available' as const },
@@ -61,10 +62,11 @@ onMounted(() => {
 
 const fetchCoupons = async () => {
   try {
-    const res = await couponApi.getCoupons()
-    coupons.value = res.data
+    const res = await couponApi.getCoupons(activeTab.value, userId.value)
+    coupons.value = res.data || []
   } catch (error) {
     console.error('Failed to fetch coupons:', error)
+    coupons.value = []
   } finally {
     loading.value = false
   }
