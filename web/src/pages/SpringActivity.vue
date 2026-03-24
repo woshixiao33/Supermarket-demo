@@ -88,36 +88,40 @@
     </section>
 
     <!-- 分享弹窗 -->
-    <div v-if="showSharePanel" class="overlay" @click="showSharePanel = false">
-      <div class="share-panel" @click.stop>
-        <div class="share-title">分享到</div>
-        <div class="share-options">
-          <div class="share-option">
-            <div class="share-icon" style="background: #07c160">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                <path d="M8.5,13.5A1.5,1.5 0 1,1 10,15A1.5,1.5 0 0,1 8.5,13.5M12,2A1.5,1.5 0 1,1 10.5,3.5A1.5,1.5 0 0,1 12,2M15.5,13.5A1.5,1.5 0 1,1 14,15A1.5,1.5 0 0,1 15.5,13.5M12,2V7.5"/>
-              </svg>
+    <div v-if="showSharePanel" class="dialog-overlay" @click.self="showSharePanel = false">
+      <div class="dialog" @click.stop>
+        <div class="dialog-header">分享到</div>
+        <div class="dialog-body">
+          <div class="share-options">
+            <div class="share-option">
+              <div class="share-icon" style="background: #07c160">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <path d="M8.5,13.5A1.5,1.5 0 1,1 10,15A1.5,1.5 0 0,1 8.5,13.5M12,2A1.5,1.5 0 1,1 10.5,3.5A1.5,1.5 0 0,1 12,2M15.5,13.5A1.5,1.5 0 1,1 14,15A1.5,1.5 0 0,1 15.5,13.5M12,2V7.5"/>
+                </svg>
+              </div>
+              <div class="share-label">微信好友</div>
             </div>
-            <div class="share-label">微信好友</div>
-          </div>
-          <div class="share-option">
-            <div class="share-icon" style="background: #07c160">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                <path d="M12,2C10.89,2 10,2.89 10,4V8H14V4C14,2.89 13.11,2 12,2M4,6C2.89,6 2,6.89 2,8V12H6V8C6,6.89 5.11,6 4,6M20,6C18.89,6 18,6.89 18,8V12H22V8C22,6.89 21.11,6 20,6M2,14V18C2,19.11 2.89,20 4,20H6V14H2M14,20V16H10V20H14M18,20C19.11,20 20,19.11 20,18V14H16V20H18Z"/>
-              </svg>
+            <div class="share-option">
+              <div class="share-icon" style="background: #07c160">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <path d="M12,2C10.89,2 10,2.89 10,4V8H14V4C14,2.89 13.11,2 12,2M4,6C2.89,6 2,6.89 2,8V12H6V8C6,6.89 5.11,6 4,6M20,6C18.89,6 18,6.89 18,8V12H22V8C22,6.89,21.11,6 20,6M2,14V18C2,19.11 2.89,20 4,20H6V14H2M14,20V16H10V20H14M18,20C19.11,20 20,19.11 20,18V14H16V20H18Z"/>
+                </svg>
+              </div>
+              <div class="share-label">朋友圈</div>
             </div>
-            <div class="share-label">朋友圈</div>
-          </div>
-          <div class="share-option">
-            <div class="share-icon" style="background: #3b82f6">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                <path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.13C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.35 15.06,5.69 15.17,6L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18A3,3 0 0,0 15,21A3,3 0 0,0 18,24A3,3 0 0,0 21,21A3,3 0 0,0 18,18Z"/>
-              </svg>
+            <div class="share-option">
+              <div class="share-icon" style="background: #3b82f6">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.13C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.35 15.06,5.69 15.17,6L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18A3,3 0 0,0 15,21A3,3 0 0,0 18,24A3,3 0 0,0 21,21A3,3 0 0,0 18,18Z"/>
+                </svg>
+              </div>
+              <div class="share-label">复制链接</div>
             </div>
-            <div class="share-label">复制链接</div>
           </div>
         </div>
-        <button class="share-cancel" @click="showSharePanel = false">取消</button>
+        <div class="dialog-footer">
+          <button class="dialog-btn dialog-btn-secondary" @click="showSharePanel = false">取消</button>
+        </div>
       </div>
     </div>
 
@@ -461,7 +465,7 @@ const navigateToProduct = (id: string) => {
 }
 
 /* 分享面板 */
-.overlay {
+.dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -469,25 +473,65 @@ const navigateToProduct = (id: string) => {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
 }
 
-.share-panel {
-  width: 100%;
-  max-width: 430px;
-  margin: 0 auto;
+.dialog {
   background: #fff;
-  border-radius: 16px 16px 0 0;
+  border-radius: 16px;
+  width: 85%;
+  max-width: 320px;
+  overflow: hidden;
+}
+
+.dialog-header {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dialog-body {
   padding: 20px 16px;
 }
 
-.share-title {
-  font-size: 16px;
+.dialog-footer {
+  display: flex;
+  padding: 12px 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.dialog-btn {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 500;
-  color: #333;
-  text-align: center;
-  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dialog-btn-primary {
+  background: #27AE60;
+  color: #fff;
+}
+
+.dialog-btn-primary:active {
+  background: #219150;
+}
+
+.dialog-btn-secondary {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.dialog-btn-secondary:active {
+  background: #e8e8e8;
 }
 
 .share-options {
@@ -517,17 +561,6 @@ const navigateToProduct = (id: string) => {
 .share-label {
   font-size: 12px;
   color: #666;
-}
-
-.share-cancel {
-  width: 100%;
-  padding: 12px;
-  background: #f5f5f5;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  color: #333;
-  cursor: pointer;
 }
 
 /* 提示弹窗 */

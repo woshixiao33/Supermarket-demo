@@ -83,15 +83,10 @@
     </div>
 
     <!-- 优惠券选择弹窗 -->
-    <div v-if="showCouponSelector" class="modal-overlay" @click.self="showCouponSelector = false">
-      <div class="modal-content">
-        <div class="flex-between" style="padding: 16px; border-bottom: 1px solid #f0f0f0">
-          <div class="text-sm" style="font-weight: 600">选择优惠券</div>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="cursor: pointer" @click="showCouponSelector = false">
-            <path d="M18 6L6 18M6 6l12 12"></path>
-          </svg>
-        </div>
-        <div style="padding: 16px; max-height: 400px; overflow-y: auto">
+    <div v-if="showCouponSelector" class="dialog-overlay" @click.self="showCouponSelector = false">
+      <div class="dialog dialog-coupon">
+        <div class="dialog-header">选择优惠券</div>
+        <div class="dialog-body dialog-body-scrollable">
           <div
             v-if="availableCoupons.length === 0"
             class="text-sm text-secondary"
@@ -118,7 +113,7 @@
                   满{{ coupon.minAmount }}可用
                 </div>
               </div>
-              <div class="checkbox" :style="{ borderColor: selectedCoupon?.id === coupon.id ? '#27AE60' : '#ddd' }">
+              <div class="coupon-checkbox" :style="{ borderColor: selectedCoupon?.id === coupon.id ? '#27AE60' : '#ddd' }">
                 <svg v-if="selectedCoupon?.id === coupon.id" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#27AE60" stroke-width="3">
                   <path d="M20 6L9 17l-5-5"></path>
                 </svg>
@@ -134,7 +129,7 @@
             <div style="flex: 1">
               <div class="text-sm">不使用优惠券</div>
             </div>
-            <div class="checkbox" :style="{ borderColor: selectedCoupon === null ? '#27AE60' : '#ddd' }">
+            <div class="coupon-checkbox" :style="{ borderColor: selectedCoupon === null ? '#27AE60' : '#ddd' }">
               <svg v-if="selectedCoupon === null" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#27AE60" stroke-width="3">
                 <path d="M20 6L9 17l-5-5"></path>
               </svg>
@@ -230,7 +225,10 @@ const handleCheckout = async () => {
 
   checkingOut.value = true
   try {
-    const res = await orderApi.checkout({ couponId: selectedCoupon.value?.id })
+    const res = await orderApi.checkout({
+      couponId: selectedCoupon.value?.id,
+      userId: 'user001'
+    })
     if (res.data.success) {
       incrementRefreshToken()
       router.push(`/payment-result/${res.data.orderId}`)
@@ -242,8 +240,10 @@ const handleCheckout = async () => {
     checkingOut.value = false
   }
 }
+</script>
+
 <style scoped>
-.modal-overlay {
+.dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -251,18 +251,40 @@ const handleCheckout = async () => {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
 }
 
-.modal-content {
+.dialog {
   background: #fff;
-  width: 100%;
-  max-width: 430px;
-  margin: 0 auto;
-  border-radius: 16px 16px 0 0;
-  max-height: 80vh;
+  border-radius: 16px;
+  width: 85%;
+  max-width: 320px;
   overflow: hidden;
+}
+
+.dialog-coupon {
+  max-width: 380px;
+}
+
+.dialog-header {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dialog-body {
+  padding: 20px 16px;
+}
+
+.dialog-body-scrollable {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 16px;
 }
 
 .coupon-item {
@@ -288,7 +310,7 @@ const handleCheckout = async () => {
   background: linear-gradient(135deg, #f0fdf4, #fff);
 }
 
-.checkbox {
+.coupon-checkbox {
   width: 20px;
   height: 20px;
   border: 2px solid #ddd;

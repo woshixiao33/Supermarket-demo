@@ -105,6 +105,305 @@ const products = [
     tags: ['有机', '高钙'],
     desc: '牧场直供，营养健康。'
   },
+  // 百亿补贴 - 米面粮油牛奶
+  {
+    id: 'p200',
+    name: '东北优质大米 5kg',
+    price: 39.9,
+    stock: 100,
+    categoryId: 'grain',
+    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80',
+    tags: ['东北', '新米'],
+    desc: '黑土地种植，软糯香甜',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p201',
+    name: '五谷杂粮组合 1kg',
+    price: 29.9,
+    stock: 80,
+    categoryId: 'grain',
+    image: 'https://images.unsplash.com/photo-1517445312882-bc9919f1a3bb?w=400&q=80',
+    tags: ['健康', '粗粮'],
+    desc: '科学配比，营养均衡',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p202',
+    name: '金龙鱼花生油 5L',
+    price: 89.9,
+    stock: 60,
+    categoryId: 'oil',
+    image: 'https://images.unsplash.com/photo-1596527653716-3d64547dd485?w=400&q=80',
+    tags: ['花生', '健康'],
+    desc: '物理压榨，香味浓郁',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p203',
+    name: '金龙鱼玉米油 5L',
+    price: 79.9,
+    stock: 70,
+    categoryId: 'oil',
+    image: 'https://images.unsplash.com/photo-1596527653716-3d64547dd485?w=400&q=80',
+    tags: ['玉米', '清淡'],
+    desc: '非转基因，营养健康',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p204',
+    name: '金龙鱼调和油 5L',
+    price: 69.9,
+    stock: 90,
+    categoryId: 'oil',
+    image: 'https://images.unsplash.com/photo-1596527653716-3d64547dd485?w=400&q=80',
+    tags: ['调和', '均衡'],
+    desc: '多种植物油科学配比',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p205',
+    name: '东北拉条子 1kg',
+    price: 12.9,
+    stock: 120,
+    categoryId: 'noodle',
+    image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&q=80',
+    tags: ['小麦', '劲道'],
+    desc: '传统工艺，口感劲道',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p206',
+    name: '进口意大利面 500g',
+    price: 15.9,
+    stock: 100,
+    categoryId: 'noodle',
+    image: 'https://images.unsplash.com/photo-1551183053-bf91b1d31171?w=400&q=80',
+    tags: ['进口', '意大利'],
+    desc: '意大利原装进口',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p207',
+    name: '有机燕麦片 500g',
+    price: 22.9,
+    stock: 85,
+    categoryId: 'grain',
+    image: 'https://images.unsplash.com/photo-1517673400267-0251440c45dc?w=400&q=80',
+    tags: ['有机', '早餐'],
+    desc: '膳食纤维丰富',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p208',
+    name: '伊利纯牛奶 24盒装',
+    price: 59.9,
+    stock: 150,
+    categoryId: 'daily',
+    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&q=80',
+    tags: ['伊利', '纯牛奶'],
+    desc: '24盒装，家庭装',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p209',
+    name: '蒙牛纯牛奶 24盒装',
+    price: 56.9,
+    stock: 140,
+    categoryId: 'daily',
+    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80',
+    tags: ['蒙牛', '纯牛奶'],
+    desc: '24盒装，营养美味',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p210',
+    name: '光明酸奶 12杯装',
+    price: 32.9,
+    stock: 100,
+    categoryId: 'daily',
+    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80',
+    tags: ['光明', '酸奶'],
+    desc: '原味酸奶，酸甜可口',
+    tag: '百亿补贴'
+  },
+  {
+    id: 'p211',
+    name: '有机牛奶 1L',
+    price: 18.9,
+    stock: 90,
+    categoryId: 'daily',
+    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&q=80',
+    tags: ['有机', '高钙'],
+    desc: '有机牧场，天然健康',
+    tag: '百亿补贴'
+  },
+  // 官方立减 - 酒水专场
+  {
+    id: 'p300',
+    name: '茅台飞天53度 500ml',
+    price: 1499.0,
+    stock: 30,
+    categoryId: 'alcohol',
+    image: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&q=80',
+    tags: ['茅台', '53度'],
+    desc: '酱香型白酒，国酒经典',
+    tag: '官方立减'
+  },
+  {
+    id: 'p301',
+    name: '五粮液 52度 500ml',
+    price: 1199.0,
+    stock: 40,
+    categoryId: 'alcohol',
+    image: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&q=80',
+    tags: ['五粮液', '52度'],
+    desc: '浓香型白酒，宜宾名酒',
+    tag: '官方立减'
+  },
+  {
+    id: 'p302',
+    name: '泸州老窖 52度 500ml',
+    price: 399.0,
+    stock: 60,
+    categoryId: 'alcohol',
+    image: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&q=80',
+    tags: ['泸州老窖', '52度'],
+    desc: '浓香型白酒，窖香浓郁',
+    tag: '官方立减'
+  },
+  {
+    id: 'p303',
+    name: '剑南春 52度 500ml',
+    price: 459.0,
+    stock: 50,
+    categoryId: 'alcohol',
+    image: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&q=80',
+    tags: ['剑南春', '52度'],
+    desc: '浓香型白酒，川酒六朵金花',
+    tag: '官方立减'
+  },
+  {
+    id: 'p304',
+    name: '青岛啤酒 12瓶装',
+    price: 49.9,
+    stock: 200,
+    categoryId: 'beer',
+    image: 'https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=400&q=80',
+    tags: ['青岛', '啤酒'],
+    desc: '经典拉格，清爽好喝',
+    tag: '官方立减'
+  },
+  {
+    id: 'p305',
+    name: '雪花啤酒 24罐装',
+    price: 69.9,
+    stock: 180,
+    categoryId: 'beer',
+    image: 'https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=400&q=80',
+    tags: ['雪花', '啤酒'],
+    desc: '勇闯天涯，口感清爽',
+    tag: '官方立减'
+  },
+  {
+    id: 'p306',
+    name: '哈尔滨啤酒 12瓶装',
+    price: 39.9,
+    stock: 160,
+    categoryId: 'beer',
+    image: 'https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=400&q=80',
+    tags: ['哈尔滨', '啤酒'],
+    desc: '冰纯系列，清爽甘醇',
+    tag: '官方立减'
+  },
+  {
+    id: 'p307',
+    name: '百威啤酒 12罐装',
+    price: 59.9,
+    stock: 150,
+    categoryId: 'beer',
+    image: 'https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=400&q=80',
+    tags: ['百威', '啤酒'],
+    desc: '美国品牌，世界销量第一',
+    tag: '官方立减'
+  },
+  {
+    id: 'p308',
+    name: '张裕解百纳红酒 750ml',
+    price: 128.0,
+    stock: 80,
+    categoryId: 'wine',
+    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
+    tags: ['张裕', '红酒'],
+    desc: '干红葡萄酒，果香浓郁',
+    tag: '官方立减'
+  },
+  {
+    id: 'p309',
+    name: '长城红酒 750ml',
+    price: 88.0,
+    stock: 90,
+    categoryId: 'wine',
+    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
+    tags: ['长城', '红酒'],
+    desc: '干红葡萄酒，入口柔和',
+    tag: '官方立减'
+  },
+  {
+    id: 'p310',
+    name: '进口红酒礼盒 2瓶装',
+    price: 199.0,
+    stock: 60,
+    categoryId: 'wine',
+    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
+    tags: ['进口', '红酒'],
+    desc: '法国进口，优雅醇厚',
+    tag: '官方立减'
+  },
+  {
+    id: 'p311',
+    name: '杰克丹尼威士忌 750ml',
+    price: 299.0,
+    stock: 50,
+    categoryId: 'spirit',
+    image: 'https://images.unsplash.com/photo-1596466614080-5623f7f82596?w=400&q=80',
+    tags: ['威士忌', '进口'],
+    desc: '田纳西威士忌，世界知名',
+    tag: '官方立减'
+  },
+  {
+    id: 'p312',
+    name: '百龄坛特醇威士忌 700ml',
+    price: 259.0,
+    stock: 55,
+    categoryId: 'spirit',
+    image: 'https://images.unsplash.com/photo-1596466614080-5623f7f82596?w=400&q=80',
+    tags: ['威士忌', '进口'],
+    desc: '苏格兰威士忌，口感醇厚',
+    tag: '官方立减'
+  },
+  {
+    id: 'p313',
+    name: '伏特加 700ml',
+    price: 189.0,
+    stock: 65,
+    categoryId: 'spirit',
+    image: 'https://images.unsplash.com/photo-1596466614080-5623f7f82596?w=400&q=80',
+    tags: ['伏特加', '进口'],
+    desc: '俄罗斯伏特加，纯净顺滑',
+    tag: '官方立减'
+  },
+  {
+    id: 'p314',
+    name: '白兰地 700ml',
+    price: 229.0,
+    stock: 70,
+    categoryId: 'spirit',
+    image: 'https://images.unsplash.com/photo-1596466614080-5623f7f82596?w=400&q=80',
+    tags: ['白兰地', '进口'],
+    desc: '法国白兰地，橡木桶陈酿',
+    tag: '官方立减'
+  },
   // 春节活动商品
   {
     id: 'p100',
@@ -337,7 +636,7 @@ app.post('/api/cart', (req, res) => {
 });
 
 app.post('/api/checkout', (req, res) => {
-  const { couponId } = req.body;
+  const { couponId, userId } = req.body;
 
   if (!Object.keys(cart).length) {
     return res.status(400).json({ message: '购物车为空' });
@@ -346,6 +645,7 @@ app.post('/api/checkout', (req, res) => {
   const items = buildCartItems();
   let totalAmount = Number(items.reduce((sum, i) => sum + i.amount, 0).toFixed(2));
   const orderId = 'MOCK' + Date.now();
+  const currentUserId = userId || 'user001'; // 使用传递的userId或默认值
 
   // 优惠券折扣计算
   let couponDiscount = 0;
@@ -354,9 +654,10 @@ app.post('/api/checkout', (req, res) => {
   if (couponId) {
     // 检查普通优惠券
     const coupon = coupons.find(c => c.id === couponId);
-    // 检查春节活动优惠券
-    const cnyCoupon = global.userCouponRecords?.[`user_user001_coupon_${couponId === 'cny50' ? '50' : '20'}`] ?
-      { id: 'cny' + (couponId === 'cny50' ? '50' : '20'), amount: couponId === 'cny50' ? 50 : 20, minAmount: couponId === 'cny50' ? 299 : 199 } :
+    // 检查春节活动优惠券 - 使用与getCoupons一致的key格式和minAmount
+    const cnyCouponKey = `user_${currentUserId}_coupon_${couponId === 'cny50' ? '50' : '20'}`;
+    const cnyCoupon = global.userCouponRecords?.[cnyCouponKey] ?
+      { id: 'cny' + (couponId === 'cny50' ? '50' : '20'), amount: couponId === 'cny50' ? 50 : 20, minAmount: couponId === 'cny50' ? 299 : 129, title: couponId === 'cny50' ? '春节满减券' : '春节折扣券' } :
       null;
 
     const validCoupon = coupon || cnyCoupon;
@@ -370,6 +671,29 @@ app.post('/api/checkout', (req, res) => {
           amount: validCoupon.amount
         };
         totalAmount = Number((totalAmount - couponDiscount).toFixed(2));
+
+        // 标记优惠券为已使用
+        if (couponId.startsWith('cny')) {
+          // 春节活动优惠券
+          const couponType = couponId === 'cny50' ? '50' : '20';
+          const key = `user_${currentUserId}_coupon_${couponType}`;
+          console.log(`[Checkout] 尝试更新优惠券状态, key: ${key}`);
+          console.log(`[Checkout] userCouponRecords:`, JSON.stringify(global.userCouponRecords, null, 2));
+          
+          if (global.userCouponRecords && global.userCouponRecords[key]) {
+            global.userCouponRecords[key].used = true;
+            global.userCouponRecords[key].usedAt = Date.now();
+            console.log(`[Checkout] 优惠券状态已更新为已使用:`, JSON.stringify(global.userCouponRecords[key], null, 2));
+          } else {
+            console.log(`[Checkout] 警告: 未找到优惠券记录, key: ${key}`);
+          }
+        } else {
+          // 普通优惠券
+          const couponIndex = coupons.findIndex(c => c.id === couponId);
+          if (couponIndex !== -1) {
+            coupons[couponIndex].status = 'used';
+          }
+        }
       }
     }
   }
@@ -580,38 +904,62 @@ app.get('/api/coupons', (req, res) => {
 
   // 如果提供了 userId，合并春节活动领取的优惠券
   if (userId && global.userCouponRecords) {
+    console.log(`[getCoupons] 查询用户优惠券, userId: ${userId}`);
+    console.log(`[getCoupons] userCouponRecords:`, JSON.stringify(global.userCouponRecords, null, 2));
+    
     const cnyCoupons = [];
 
     // 检查 50元券
-    if (global.userCouponRecords[`user_${userId}_coupon_50`]) {
+    const cny50Key = `user_${userId}_coupon_50`;
+    const cny50Record = global.userCouponRecords[cny50Key];
+    console.log(`[getCoupons] cny50Key: ${cny50Key}, cny50Record:`, cny50Record);
+    if (cny50Record) {
       cnyCoupons.push({
         id: 'cny50',
         title: '春节满减券',
         amount: 50,
         minAmount: 299,
         category: '全场通用',
-        status: 'available',
+        status: cny50Record.used ? 'used' : 'available',
+        used: cny50Record.used,
         validUntil: Date.now() + 30 * 24 * 60 * 60 * 1000,
-        description: '春节活动专享，满299减50'
+        description: '春节活动专享，满299减50',
+        usedAt: cny50Record.usedAt
       });
     }
 
     // 检查 20元券
-    if (global.userCouponRecords[`user_${userId}_coupon_20`]) {
+    const cny20Key = `user_${userId}_coupon_20`;
+    const cny20Record = global.userCouponRecords[cny20Key];
+    console.log(`[getCoupons] cny20Key: ${cny20Key}, cny20Record:`, cny20Record);
+    if (cny20Record) {
       cnyCoupons.push({
         id: 'cny20',
         title: '春节折扣券',
         amount: 20,
         minAmount: 129,
         category: '全场通用',
-        status: 'available',
+        status: cny20Record.used ? 'used' : 'available',
+        used: cny20Record.used,
         validUntil: Date.now() + 30 * 24 * 60 * 60 * 1000,
-        description: '春节活动专享，满129减20'
+        description: '春节活动专享，满129减20',
+        usedAt: cny20Record.usedAt
       });
     }
+    
+    console.log(`[getCoupons] cnyCoupons:`, JSON.stringify(cnyCoupons, null, 2));
 
     result = [...result, ...cnyCoupons];
   }
+
+  // 检查优惠券是否过期
+  const now = Date.now();
+  result = result.map(coupon => {
+    if (coupon.status !== 'used' && coupon.validUntil < now) {
+      return { ...coupon, status: 'expired' };
+    }
+    return coupon;
+  });
 
   if (status) {
     result = result.filter(c => c.status === status);

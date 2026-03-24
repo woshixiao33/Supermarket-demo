@@ -41,10 +41,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { couponApi } from '@/api'
 import type { Coupon } from '@/types'
 
+const route = useRoute()
 const coupons = ref<Coupon[]>([])
 const loading = ref(true)
 const activeTab = ref<'available' | 'used' | 'expired'>('available')
@@ -57,12 +59,25 @@ const tabs = [
 ]
 
 onMounted(() => {
-  fetchCoupons()
+  fetchAllCoupons()
 })
 
-const fetchCoupons = async () => {
+// 监听路由变化,每次进入页面都重新获取数据
+watch(() => route.path, (newPath) => {
+  if (newPath === '/coupons') {
+    fetchAllCoupons()
+  }
+})
+
+// 监听标签切换,重新获取数据
+watch(activeTab, () => {
+  fetchAllCoupons()
+})
+
+const fetchAllCoupons = async () => {
   try {
-    const res = await couponApi.getCoupons(activeTab.value, userId.value)
+    // 获取所有状态的优惠券
+    const res = await couponApi.getCoupons(undefined, userId.value)
     coupons.value = res.data || []
   } catch (error) {
     console.error('Failed to fetch coupons:', error)

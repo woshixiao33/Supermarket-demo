@@ -18,6 +18,21 @@ const instance: AxiosInstance = axios.create({
   timeout: 10000
 })
 
+// 请求拦截器 - 添加时间戳避免缓存
+instance.interceptors.request.use(
+  (config) => {
+    if (config.method === 'get' && config.params) {
+      config.params = { ...config.params, _t: Date.now() }
+    } else if (config.method === 'get') {
+      config.params = { _t: Date.now() }
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
 instance.interceptors.response.use(
   (response: AxiosResponse) => {
     return response
@@ -96,7 +111,7 @@ export const cartApi = {
 
 export const orderApi = {
   getOrders: (params?: { status?: string }) => api.get<Order[]>('/orders', { params }),
-  checkout: (data?: { couponId?: string }) => api.post<{ orderId: string; totalAmount: number; couponDiscount: number }>('/checkout', data)
+  checkout: (data?: { couponId?: string, userId?: string }) => api.post<{ orderId: string; totalAmount: number; couponDiscount: number }>('/checkout', data)
 }
 
 export const userApi = {

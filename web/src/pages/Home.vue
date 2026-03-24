@@ -52,19 +52,30 @@
       </div>
     </header>
 
-    <section style="padding: 12px; background: var(--color-bg)">
-      <div style="position: relative; width: 100%; height: 160px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; cursor: pointer" @click="router.push('/activity/spring')">
+    <section style="padding: 12px; background: var(--color-bg); position: relative; z-index: 1">
+      <div
+        ref="bannerContainer"
+        style="position: relative; width: 100%; height: 160px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; cursor: pointer; z-index: 10; touch-action: pan-y;"
+        @click="handleBannerClick"
+        @touchstart="handleTouchStart"
+        @touchmove="handleTouchMove"
+        @touchend="handleTouchEnd"
+        @mousedown="handleMouseDown"
+        @mousemove="handleMouseMove"
+        @mouseup="handleMouseUp"
+        @mouseleave="handleMouseUp"
+      >
         <img
           v-for="(img, index) in BANNER_IMAGES"
           :key="index"
           :src="img"
           :alt="'Banner ' + (index + 1)"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: currentBanner === index ? 1 : 0; transition: opacity 0.5s ease"
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: currentBanner === index ? 1 : 0; transition: opacity 0.5s ease; pointer-events: none; user-select: none;"
         />
         <!-- 第一张轮播图的文案 -->
         <div
           v-if="currentBanner === 0"
-          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(230, 57, 70, 0.75), rgba(255, 122, 0, 0.65)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(230, 57, 70, 0.75), rgba(255, 122, 0, 0.65)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease; z-index: 1; pointer-events: none; user-select: none;"
         >
           <div style="font-size: 28px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.2)">
             春归鲜到
@@ -76,7 +87,7 @@
         <!-- 第二张轮播图的文案 -->
         <div
           v-if="currentBanner === 1"
-          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(255, 165, 2, 0.75)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(255, 165, 2, 0.75)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease; z-index: 1; pointer-events: none; user-select: none;"
         >
           <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.3)">
             百亿补贴
@@ -88,7 +99,7 @@
         <!-- 第三张轮播图的文案 -->
         <div
           v-if="currentBanner === 2"
-          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(142, 68, 173, 0.75), rgba(52, 73, 94, 0.7)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease"
+          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(142, 68, 173, 0.75), rgba(52, 73, 94, 0.7)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease; z-index: 1; pointer-events: none; user-select: none;"
         >
           <div style="font-size: 28px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.2)">
             官方立减8.8折起
@@ -97,7 +108,7 @@
             酒水专场 · 畅享优惠
           </div>
         </div>
-        <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 10">
+        <div style="position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 10; pointer-events: none;">
           <div
             v-for="(_, index) in BANNER_IMAGES"
             :key="index"
@@ -178,10 +189,12 @@ const LOCATIONS = [
 ]
 
 const BANNER_IMAGES = [
-  'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80',
+  // 第一张: 春归鲜到(春节活动) - 春节主题
+  'https://images.unsplash.com/photo-1512516022770-5c96f25b7d6d?w=800&q=80',
+  // 第二张: 百亿补贴 - 促销主题
   'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80',
-  'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80',
-  'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80'
+  // 第三张: 官方立减8.8折起(酒水专场) - 酒水主题
+  'https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=800&q=80'
 ]
 
 const categories = ref<Category[]>([])
@@ -190,6 +203,12 @@ const currentLocation = ref(LOCATIONS[0].id)
 const searchValue = ref('')
 const currentBanner = ref(0)
 const unreadCount = ref(0)
+
+// 触摸/滑动相关状态
+const touchStartX = ref(0)
+const touchStartY = ref(0)
+const isSwiping = ref(false)
+const isDragging = ref(false)
 
 const selectedLocation = computed(() => LOCATIONS.find(l => l.id === currentLocation.value) || LOCATIONS[0])
 
@@ -251,6 +270,103 @@ const navigateToCategory = (categoryId: string) => {
 
 const navigateToProduct = (productId: string) => {
   router.push(`/product/${productId}`)
+}
+
+const handleBannerClick = () => {
+  // 如果是滑动操作,不触发点击事件
+  if (isSwiping.value) {
+    return
+  }
+
+  // 根据当前轮播图索引进行跳转
+  switch (currentBanner.value) {
+    case 0:
+      // 第一张轮播图: 跳转到春节活动页
+      router.push('/activity/spring')
+      break
+    case 1:
+      // 第二张轮播图: 跳转到百亿补贴商品列表页
+      router.push(`/category?search=${encodeURIComponent('百亿补贴')}`)
+      break
+    case 2:
+      // 第三张轮播图: 跳转到官方立减酒水商品列表页
+      router.push(`/category?search=${encodeURIComponent('官方立减')}`)
+      break
+  }
+}
+
+// 触摸事件处理
+const handleTouchStart = (e: TouchEvent) => {
+  touchStartX.value = e.touches[0].clientX
+  touchStartY.value = e.touches[0].clientY
+  isSwiping.value = false
+}
+
+const handleTouchMove = (e: TouchEvent) => {
+  // 垂直滑动不触发轮播切换
+  const diffX = Math.abs(e.touches[0].clientX - touchStartX.value)
+  const diffY = Math.abs(e.touches[0].clientY - touchStartY.value)
+
+  if (diffX > diffY) {
+    // 水平滑动,阻止默认行为
+    e.preventDefault()
+  }
+}
+
+const handleTouchEnd = (e: TouchEvent) => {
+  const touchEndX = e.changedTouches[0].clientX
+  const diffX = touchEndX - touchStartX.value
+
+  // 判断滑动方向和距离
+  if (Math.abs(diffX) > 50) {
+    // 水平滑动超过50像素,视为有效滑动
+    if (diffX > 0) {
+      // 向右滑动: 上一张
+      currentBanner.value = (currentBanner.value - 1 + BANNER_IMAGES.length) % BANNER_IMAGES.length
+    } else {
+      // 向左滑动: 下一张
+      currentBanner.value = (currentBanner.value + 1) % BANNER_IMAGES.length
+    }
+    isSwiping.value = true
+    // 短暂延迟后重置滑动标志
+    setTimeout(() => {
+      isSwiping.value = false
+    }, 300)
+  }
+}
+
+// 鼠标事件处理(支持桌面端鼠标拖拽)
+const handleMouseDown = (e: MouseEvent) => {
+  touchStartX.value = e.clientX
+  isDragging.value = true
+  isSwiping.value = false
+}
+
+const handleMouseMove = (e: MouseEvent) => {
+  if (!isDragging.value) return
+  e.preventDefault()
+}
+
+const handleMouseUp = (e: MouseEvent) => {
+  if (!isDragging.value) return
+
+  const diffX = e.clientX - touchStartX.value
+
+  if (Math.abs(diffX) > 50) {
+    if (diffX > 0) {
+      // 向右滑动: 上一张
+      currentBanner.value = (currentBanner.value - 1 + BANNER_IMAGES.length) % BANNER_IMAGES.length
+    } else {
+      // 向左滑动: 下一张
+      currentBanner.value = (currentBanner.value + 1) % BANNER_IMAGES.length
+    }
+    isSwiping.value = true
+    setTimeout(() => {
+      isSwiping.value = false
+    }, 300)
+  }
+
+  isDragging.value = false
 }
 </script>
 
